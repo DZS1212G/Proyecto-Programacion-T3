@@ -1,4 +1,5 @@
 
+import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -12,17 +13,49 @@ import javax.swing.JOptionPane;
  */
 public class Operativa {
 
-    public void añadirContacto(Map<String, Integer> inventario) {
-        for (String nombre : inventario.keySet()) {
+    Map<String, Integer> agenda = new HashMap<>();
+
+    public void añadirContacto() {
+        for (String nombre : agenda.keySet()) {
             if (jtextfiel.gettext == nombre) {
                 if (JOptionPane.showConfirmDialog(this, "Este nombre ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
                     modificarContacto();
-                    return;
-                } else {
-                    return;
                 }
             }
         }
-        agenda.put();
+        agenda.put(jtextfiel.gettext, jtextfiel.gettext);
+    }
+
+    public void modificarContacto() {
+        for (String nombre : agenda.keySet()) {
+            if (jtextfiel.gettext == nombre) {
+                agenda.replace(jtextfiel.gettext, jtextfiel.gettext);
+                return;
+
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, "Este nombre no esta registrado", "Error", 0);
+    }
+
+    public void eliminarContacto() {
+        for (String nombre : agenda.keySet()) {
+            if (jtextfiel.gettext == nombre) {
+                agenda.remove(jtextfiel.gettext, jtextfiel.gettext);
+                return;
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, "Este nombre no esta registrado", "Error", 0);
+    }
+
+    public void buscarContacto() {
+        String nombreaBuscar = JOptionPane.showInputDialog(this, "Este nombre no esta registrado", "Error", 0);
+        for (String nombre : agenda.keySet()) {
+            if (nombreaBuscar == nombre) {
+                this.jtextfield.setText(agenda.get(nombre));
+            }
+        }
+        JOptionPane.showMessageDialog(this, "Este nombre no esta registrado", "Error", 0);
     }
 }

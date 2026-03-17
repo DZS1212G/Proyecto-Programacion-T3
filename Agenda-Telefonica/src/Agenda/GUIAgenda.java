@@ -57,7 +57,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
                 if (JOptionPane.showConfirmDialog(this, "Este nombre ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
-                    modificarContacto();
+                    modificarContacto(nombre);
                 }
             }
         }
@@ -65,7 +65,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         agenda.put(jTextFieldNombre.getText(), numero);
     }
 
-    public void modificarContacto() throws Exception {
+    public void modificarContacto(String nombreMod) throws Exception {
         validContacto();
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
@@ -327,7 +327,7 @@ public class GUIAgenda extends javax.swing.JFrame {
                 eliminarContacto();
                 this.Contacto.setVisible(false);
             } else if (modificar) {
-                modificarContacto();
+                modificarContacto(JOptionPane);
                 this.Contacto.setVisible(false);
             } else if (buscar) {
                 buscarContacto();

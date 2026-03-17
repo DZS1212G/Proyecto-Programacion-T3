@@ -144,8 +144,6 @@ public class GUIAgenda extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        BarraDeEstado.setText("jLabel2");
         getContentPane().add(BarraDeEstado, java.awt.BorderLayout.PAGE_END);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -241,7 +239,7 @@ public class GUIAgenda extends javax.swing.JFrame {
                     .addComponent(Agenda)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 21, Short.MAX_VALUE)))
+                        .addGap(0, 51, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 

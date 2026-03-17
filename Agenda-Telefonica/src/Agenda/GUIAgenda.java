@@ -1,7 +1,8 @@
 package Agenda;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /*
@@ -14,18 +15,21 @@ import javax.swing.JOptionPane;
  */
 public class GUIAgenda extends javax.swing.JFrame {
 
+    private DefaultListModel<Contacto> modeloLista;
     private boolean aniadir;
     private boolean buscar;
     private boolean modificar;
     private boolean borrar;
     private String nombreAMod;
-    Map<String, Integer> agenda = new HashMap<>();
+    Map<String, Integer> agenda;
 
     /**
      * Creates new form GUIAgenda
      */
     public GUIAgenda() {
         initComponents();
+        agenda = new LinkedHashMap<>();
+        modeloLista = new DefaultListModel<>();
         setFrame();
     }
 
@@ -50,7 +54,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         }
     }
 
-    public void aniadirContacto() throws Exception {
+    private void aniadirContacto() throws Exception {
         validContacto();
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
@@ -59,11 +63,12 @@ public class GUIAgenda extends javax.swing.JFrame {
                 }
             }
         }
-        int numero = Integer.parseInt(jTextFieldTelefono.getText());
-        agenda.put(jTextFieldNombre.getText(), numero);
+        agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText()));
+        modeloLista.addElement(new Contacto(jTextFieldNombre.getText(), Integer.parseInt(jTextFieldTelefono.getText())));
+        System.out.println(modeloLista);
     }
 
-    public void modificarContacto(String nombreMod) throws Exception {
+    private void modificarContacto(String nombreMod) throws Exception {
         for (String nombre : agenda.keySet()) {
             if (nombreAMod.equals(nombre)) {
                 int numero = Integer.parseInt(jTextFieldTelefono.getText());
@@ -75,12 +80,14 @@ public class GUIAgenda extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Este nombre no esta registrado", "Error", 0);
     }
 
-    public void eliminarContacto() throws Exception {
+    private void eliminarContacto() throws Exception {
         validContacto();
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
-                int numero = Integer.parseInt(jTextFieldTelefono.getText());
-                agenda.remove(jTextFieldNombre.getText(), numero);
+
+                modeloLista.removeElement(new Contacto(nombre, agenda.get(nombre)));
+                System.out.println(modeloLista);
+                agenda.remove(nombre);
                 return;
             }
         }
@@ -88,7 +95,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Este nombre no esta registrado", "Error", 0);
     }
 
-    public void buscarContacto() throws Exception {
+    private void buscarContacto() throws Exception {
         validContacto();
 
         for (String nombre : agenda.keySet()) {
@@ -230,9 +237,9 @@ public class GUIAgenda extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(42, 42, 42)
-                .addComponent(Agenda, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Agenda, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,10 +299,20 @@ public class GUIAgenda extends javax.swing.JFrame {
 
         jMenuItemListar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemListar.setText("Listar");
+        jMenuItemListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemListarActionPerformed(evt);
+            }
+        });
         jMenuAgenda.add(jMenuItemListar);
 
         jMenuItemVaciar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemVaciar.setText("Vaciar");
+        jMenuItemVaciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemVaciarActionPerformed(evt);
+            }
+        });
         jMenuAgenda.add(jMenuItemVaciar);
         jMenuAgenda.add(jSeparator1);
 
@@ -332,6 +349,7 @@ public class GUIAgenda extends javax.swing.JFrame {
             }
         } catch (Exception ex) {
             this.BarraDeEstado.setText(ex.getMessage());
+            System.out.println(ex.getMessage());
         }
 
     }//GEN-LAST:event_jButtonAceptarActionPerformed
@@ -366,6 +384,17 @@ public class GUIAgenda extends javax.swing.JFrame {
         this.borrar = true;
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
+    private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
+        this.jList.setModel(modeloLista);
+    }//GEN-LAST:event_jMenuItemListarActionPerformed
+
+    private void jMenuItemVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVaciarActionPerformed
+        if (JOptionPane.showConfirmDialog(this, "Estas seguro de querer eliminar la lista por completo?", "ELIMINAR", 0) == 0) {
+            agenda.clear();
+            modeloLista.clear();
+        }
+    }//GEN-LAST:event_jMenuItemVaciarActionPerformed
+
     private void desactivarOpciones() {
         this.borrar = false;
         this.aniadir = false;
@@ -389,7 +418,7 @@ public class GUIAgenda extends javax.swing.JFrame {
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelTelefono;
-    private javax.swing.JList<String> jList;
+    private javax.swing.JList<Contacto> jList;
     private javax.swing.JMenu jMenuAgenda;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenu jMenuContacto;

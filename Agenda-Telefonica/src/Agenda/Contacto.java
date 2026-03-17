@@ -1,7 +1,6 @@
 package Agenda;
 
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -15,12 +14,12 @@ public class Contacto {
 
     private String nombre;
     private int telefono;
-    private LocalDate fechaRegistro;
+    private LocalDateTime fechaRegistro;
 
     public Contacto(String nombre, int telefono) {
         this.nombre = nombre;
         this.telefono = telefono;
-        this.fechaRegistro = LocalDate.now();
+        this.fechaRegistro = LocalDateTime.now();
     }
 
     public String getNombre() {
@@ -39,12 +38,17 @@ public class Contacto {
         this.telefono = telefono;
     }
 
-    public LocalDate getFechaRegistro() {
+    public LocalDateTime getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(LocalDate fechaRegistro) {
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " " + telefono + " " + fechaRegistro;
     }
 
 }

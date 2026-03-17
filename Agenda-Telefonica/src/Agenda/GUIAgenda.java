@@ -2,9 +2,6 @@ package Agenda;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 /*
@@ -21,6 +18,7 @@ public class GUIAgenda extends javax.swing.JFrame {
     private boolean buscar;
     private boolean modificar;
     private boolean borrar;
+    private String nombreAMod;
     Map<String, Integer> agenda = new HashMap<>();
 
     /**
@@ -66,13 +64,12 @@ public class GUIAgenda extends javax.swing.JFrame {
     }
 
     public void modificarContacto(String nombreMod) throws Exception {
-        validContacto();
         for (String nombre : agenda.keySet()) {
-            if (jTextFieldNombre.getText().equals(nombre)) {
+            if (nombreAMod.equals(nombre)) {
                 int numero = Integer.parseInt(jTextFieldTelefono.getText());
                 agenda.replace(jTextFieldNombre.getText(), numero);
+                this.BarraDeEstado.setText("Nombre Modificado Correctamente");
                 return;
-
             }
         }
         JOptionPane.showMessageDialog(this, "Este nombre no esta registrado", "Error", 0);
@@ -327,7 +324,7 @@ public class GUIAgenda extends javax.swing.JFrame {
                 eliminarContacto();
                 this.Contacto.setVisible(false);
             } else if (modificar) {
-                modificarContacto(JOptionPane);
+                modificarContacto(nombreAMod);
                 this.Contacto.setVisible(false);
             } else if (buscar) {
                 buscarContacto();

@@ -1,6 +1,9 @@
 package Agenda;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -23,6 +26,7 @@ public class GUIAgenda extends javax.swing.JFrame {
     private boolean borrar; //boolean que indica que se ha activado el modo borrar
     private String nombreAMod; //Cadena que sive para seleccionar que contacto se va a editar
     Map<String, Integer> agenda; //Mapa que almacena nombres y numero de los contactos
+    private Comparator<Contacto> miComparator;
 
     /**
      * Creates new form GUIAgenda
@@ -138,7 +142,7 @@ public class GUIAgenda extends javax.swing.JFrame {
     }
 
     private void listar() {
-
+       
     }
 
     /**
@@ -434,7 +438,7 @@ public class GUIAgenda extends javax.swing.JFrame {
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
         mostrarAgenda();
-        Collections.sort(agenda);
+
         listar();
     }//GEN-LAST:event_jMenuItemListarActionPerformed
 

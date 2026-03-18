@@ -4,6 +4,7 @@ import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import java.util.TreeMap;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -408,7 +409,6 @@ public class GUIAgenda extends javax.swing.JFrame {
 
     private void jMenuItemAniadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAniadirActionPerformed
         desactivarOpciones();
-        this.Contacto.setVisible(true);
         this.aniadir = true;
     }//GEN-LAST:event_jMenuItemAniadirActionPerformed
 
@@ -416,27 +416,23 @@ public class GUIAgenda extends javax.swing.JFrame {
         desactivarOpciones();
         this.jLabelTelefono.setVisible(false);
         this.jTextFieldTelefono.setVisible(false);
-        this.Contacto.setVisible(true);
         this.buscar = true;
     }//GEN-LAST:event_jMenuItemBuscarActionPerformed
 
     private void jMenuItemModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModificarActionPerformed
         desactivarOpciones();
-        this.Contacto.setVisible(true);
         this.modificar = true;
         conseguirNombreaMod();
     }//GEN-LAST:event_jMenuItemModificarActionPerformed
 
     private void jMenuItemBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBorrarActionPerformed
         desactivarOpciones();
-        this.Contacto.setVisible(true);
         this.jLabelTelefono.setVisible(false);
         this.jTextFieldTelefono.setVisible(false);
         this.borrar = true;
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
-
         modelo.clear();
         listar();
         this.jLabelCantidad.setText("Hay " + String.valueOf(agenda.size()) + " contactos");

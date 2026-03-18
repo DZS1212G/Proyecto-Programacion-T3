@@ -62,28 +62,26 @@ public class GUIAgenda extends javax.swing.JFrame {
     private void aniadirContacto() throws Exception { // metodo para a?adir contactos
         validNombre();
         validNum();
-        for (String nombre : agenda.keySet()) {
-            if (jTextFieldNombre.getText().equals(nombre)) { //si encuentra un nombre igual en el mapa te pregunta si quieres modificarlo
-                if (JOptionPane.showConfirmDialog(this, "Este nombre ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
-                    nombreAMod = nombre;
-                    modificarContacto();
-                } else {
-                    throw new Exception("No se a?adio ningun contacto");
-                }
+
+        if (agenda.containsKey(jTextFieldNombre.getText())) { //si encuentra un nombre igual en el mapa te pregunta si quieres modificarlo
+            if (JOptionPane.showConfirmDialog(this, "Este nombre ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
+                nombreAMod = jTextFieldNombre.getText();
+                modificarContacto();
+            } else {
+                throw new Exception("No se a?adio ningun contacto");
             }
         }
+
         agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText())); //agrega al mapa
         this.BarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " aniadido correctamente");
     }
 
     private void modificarContacto() throws Exception {
         validNombre();
-        for (String nombre : agenda.keySet()) {
-            if (nombreAMod.equals(nombre)) {
-                agenda.replace(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText()));
-                this.BarraDeEstado.setText("Nombre Modificado Correctamente");
-                return;
-            }
+        if (agenda.containsKey(jTextFieldNombre.getText())) {
+            agenda.replace(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText()));
+            this.BarraDeEstado.setText("Nombre Modificado Correctamente");
+            return;
         }
         throw new Exception("Este nombre no esta registrado");
     }
@@ -95,11 +93,10 @@ public class GUIAgenda extends javax.swing.JFrame {
             this.nombreAMod = JOptionPane.showInputDialog(this, "Nombre no valido, introduzca de nuevo");
         }
 
-        for (String nombre : agenda.keySet()) {
-            if (nombreAMod.equals(nombre)) {
-                return;
-            }
+        if (agenda.containsKey(jTextFieldNombre.getText())) {
+            return;
         }
+
         this.BarraDeEstado.setText("Este nombre no esta registrado");
         this.Contacto.setVisible(false);
 
@@ -107,17 +104,15 @@ public class GUIAgenda extends javax.swing.JFrame {
 
     private void eliminarContacto() throws Exception { //elimina el contacto que se ha elegido
         validNombre();
-        for (String nombre : agenda.keySet()) {
-            if (jTextFieldNombre.getText().equals(nombre)) {
-                if (JOptionPane.showConfirmDialog(this, "Esta seguro de querer eliminar el contacto?", "Borrar", 0) == 0) {
+        if (agenda.containsKey(jTextFieldNombre.getText())) {
+            if (JOptionPane.showConfirmDialog(this, "Esta seguro de querer eliminar el contacto?", "Borrar", 0) == 0) {
 
-                    agenda.remove(nombre);
-                    this.BarraDeEstado.setText("Contacto " + nombre + " borrado correctamente");
-                    mostrarAgenda();
-                }
-                return;
-
+                agenda.remove(jTextFieldNombre.getText());
+                this.BarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " borrado correctamente");
+                mostrarAgenda();
             }
+            return;
+
         }
 
         throw new Exception("Este nombre no esta registrado");
@@ -126,11 +121,9 @@ public class GUIAgenda extends javax.swing.JFrame {
     private void buscarContacto() throws Exception {
         validNombre();
 
-        for (String nombre : agenda.keySet()) {
-            if (jTextFieldNombre.getText().equals(nombre)) {
-                this.BarraDeEstado.setText("El numero de telefono asociado es: " + String.valueOf(agenda.get(nombre)));
-                return;
-            }
+        if (agenda.containsKey(jTextFieldNombre.getText())) {
+            this.BarraDeEstado.setText("El numero de telefono asociado es: " + String.valueOf(agenda.get(jTextFieldNombre.getText())));
+            return;
         }
 
         throw new Exception("Este nombre no esta registrado");

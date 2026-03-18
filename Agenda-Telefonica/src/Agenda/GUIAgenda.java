@@ -14,7 +14,7 @@ import java.util.TreeMap;
  * @author zapsobdi
  */
 public class GUIAgenda extends javax.swing.JFrame {
-
+    
     private DefaultListModel<Contacto> modelo; //modelo creado para la jList
     private boolean aniadir; //boolean que indica que se ha activado el modo a?adir
     private boolean buscar; //boolean que indica que se ha activado el modo buscar
@@ -32,22 +32,21 @@ public class GUIAgenda extends javax.swing.JFrame {
         modelo = new DefaultListModel<>();
         setFrame();
     }
-
+    
     private void setFrame() {
         this.setTitle("Agenda 1 DAM GF");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.Contacto.setVisible(false); //desaparezco los campos para introducir y que se activen segun la funcion
         this.BarraDeEstado.setText("Bienvenido a la Agenda");
-
     }
-
+    
     private void validNombre() throws Exception { //validacion del nombre
         if (this.jTextFieldNombre.getText().isBlank() || this.jTextFieldNombre.getText() == null) {
             throw new Exception("La casilla del nombre esta vacia");
         }
     }
-
+    
     private void validNum() throws Exception {
         if (this.jTextFieldTelefono.getText().isBlank() || this.jTextFieldTelefono.getText() == null) {
             throw new Exception("La casilla del numero esta vacia");
@@ -57,10 +56,10 @@ public class GUIAgenda extends javax.swing.JFrame {
                     throw new Exception("Su telefono no contiene un formato adecuado (9 Numeros)");
                 }
             }
-
+            
         }
     }
-
+    
     private void aniadirContacto() throws Exception { // metodo para a?adir contactos
         validNombre();
         validNum();
@@ -77,7 +76,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText())); //agrega al mapa
         this.BarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " aniadido correctamente");
     }
-
+    
     private void modificarContacto() throws Exception {
         validNombre();
         for (String nombre : agenda.keySet()) {
@@ -89,54 +88,54 @@ public class GUIAgenda extends javax.swing.JFrame {
         }
         throw new Exception("Este nombre no esta registrado");
     }
-
+    
     private void conseguirNombreaMod() {
         this.nombreAMod = JOptionPane.showInputDialog(this, "Introduzca el nombre que desea modificar");
-
+        
         while (this.nombreAMod == null || this.nombreAMod.isBlank()) {
             this.nombreAMod = JOptionPane.showInputDialog(this, "Nombre no valido, introduzca de nuevo");
         }
-
+        
         for (String nombre : agenda.keySet()) {
             if (nombreAMod.equals(nombre)) {
                 return;
             }
-            this.BarraDeEstado.setText("Este nombre no esta registrado");
-            desactivarOpciones();
         }
-
+        this.BarraDeEstado.setText("Este nombre no esta registrado");
+        this.Contacto.setVisible(false);
+        
     }
-
+    
     private void eliminarContacto() throws Exception { //elimina el contacto que se ha elegido
         validNombre();
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
                 if (JOptionPane.showConfirmDialog(this, "Esta seguro de querer eliminar el contacto?", "Borrar", 0) == 0) {
-
+                    
                     agenda.remove(nombre);
                     this.BarraDeEstado.setText("Contacto " + nombre + " borrado correctamente");
                 }
                 return;
-
+                
             }
         }
-
+        
         throw new Exception("Este nombre no esta registrado");
     }
-
+    
     private void buscarContacto() throws Exception {
         validNombre();
-
+        
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
                 this.BarraDeEstado.setText("El numero de telefono asociado es: " + String.valueOf(agenda.get(nombre)));
                 return;
             }
         }
-
+        
         throw new Exception("Este nombre no esta registrado");
     }
-
+    
     private void listar() {
         for (String nombre : agenda.keySet()) {
             Contacto c = new Contacto(nombre, agenda.get(nombre));
@@ -449,13 +448,12 @@ public class GUIAgenda extends javax.swing.JFrame {
         desactivarOpciones();
         this.Contacto.setVisible(false);
     }//GEN-LAST:event_jButtonCancelarActionPerformed
-
+    
     private void desactivarOpciones() {
         this.borrar = false;
         this.aniadir = false;
         this.modificar = false;
         this.buscar = false;
-        this.jTextFieldTelefono.setFocusable(true);
         this.jTextFieldNombre.setText("");
         this.jTextFieldTelefono.setText("");
         this.jLabelTelefono.setVisible(true);

@@ -1,5 +1,6 @@
 package Agenda;
 
+import java.util.Collections;
 import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -433,6 +434,7 @@ public class GUIAgenda extends javax.swing.JFrame {
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
         mostrarAgenda();
+        Collections.sort(agenda);
         listar();
     }//GEN-LAST:event_jMenuItemListarActionPerformed
 

@@ -78,12 +78,9 @@ public class GUIAgenda extends javax.swing.JFrame {
 
     private void modificarContacto() throws Exception {
         validNombre();
-        if (agenda.containsKey(jTextFieldNombre.getText())) {
-            agenda.replace(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText()));
-            this.BarraDeEstado.setText("Nombre Modificado Correctamente");
-            return;
-        }
-        throw new Exception("Este nombre no esta registrado");
+        agenda.remove(nombreAMod, agenda.get(nombreAMod));
+        agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText()));
+        this.BarraDeEstado.setText("Nombre Modificado Correctamente");
     }
 
     private void conseguirNombreaMod() {
@@ -93,12 +90,12 @@ public class GUIAgenda extends javax.swing.JFrame {
             this.nombreAMod = JOptionPane.showInputDialog(this, "Nombre no valido, introduzca de nuevo");
         }
 
-        if (agenda.containsKey(jTextFieldNombre.getText())) {
-            return;
-        }
+        if (agenda.containsKey(nombreAMod)) {
 
-        this.BarraDeEstado.setText("Este nombre no esta registrado");
-        this.Contacto.setVisible(false);
+        } else {
+            this.BarraDeEstado.setText("Este nombre no esta registrado");
+            this.Contacto.setVisible(false);
+        }
 
     }
 
@@ -109,7 +106,6 @@ public class GUIAgenda extends javax.swing.JFrame {
 
                 agenda.remove(jTextFieldNombre.getText());
                 this.BarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " borrado correctamente");
-                mostrarAgenda();
             }
             return;
 

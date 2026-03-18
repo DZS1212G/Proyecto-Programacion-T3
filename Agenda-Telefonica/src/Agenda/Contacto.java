@@ -50,8 +50,7 @@ public class Contacto {
 
     @Override
     public String toString() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT);
-        return nombre + " " + telefono + " " + dtf.format(fechaRegistro);
+        return nombre + " " + telefono;
     }
 
 }

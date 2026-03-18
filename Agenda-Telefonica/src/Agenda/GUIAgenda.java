@@ -1,12 +1,9 @@
 package Agenda;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-
+import java.util.TreeMap;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -30,7 +27,7 @@ public class GUIAgenda extends javax.swing.JFrame {
      */
     public GUIAgenda() {
         initComponents();
-        agenda = new LinkedHashMap<>(); //creo el modelo y el mapa
+        agenda = new TreeMap<>(); //creo el modelo y el mapa
         modelo = new DefaultListModel<>();
         setFrame();
     }

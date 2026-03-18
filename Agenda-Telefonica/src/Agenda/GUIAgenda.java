@@ -14,7 +14,7 @@ import java.util.TreeMap;
  * @author zapsobdi
  */
 public class GUIAgenda extends javax.swing.JFrame {
-    
+
     private DefaultListModel<Contacto> modelo; //modelo creado para la jList
     private boolean aniadir; //boolean que indica que se ha activado el modo a?adir
     private boolean buscar; //boolean que indica que se ha activado el modo buscar
@@ -29,10 +29,9 @@ public class GUIAgenda extends javax.swing.JFrame {
     public GUIAgenda() {
         initComponents();
         agenda = new TreeMap<>(); //creo el modelo y el mapa
-        modelo = new DefaultListModel<>();
         setFrame();
     }
-    
+
     private void setFrame() {
         this.setTitle("Agenda 1 DAM GF");
         this.setResizable(false);
@@ -40,13 +39,13 @@ public class GUIAgenda extends javax.swing.JFrame {
         this.Contacto.setVisible(false); //desaparezco los campos para introducir y que se activen segun la funcion
         this.BarraDeEstado.setText("Bienvenido a la Agenda");
     }
-    
+
     private void validNombre() throws Exception { //validacion del nombre
         if (this.jTextFieldNombre.getText().isBlank() || this.jTextFieldNombre.getText() == null) {
             throw new Exception("La casilla del nombre esta vacia");
         }
     }
-    
+
     private void validNum() throws Exception {
         if (this.jTextFieldTelefono.getText().isBlank() || this.jTextFieldTelefono.getText() == null) {
             throw new Exception("La casilla del numero esta vacia");
@@ -56,10 +55,10 @@ public class GUIAgenda extends javax.swing.JFrame {
                     throw new Exception("Su telefono no contiene un formato adecuado (9 Numeros)");
                 }
             }
-            
+
         }
     }
-    
+
     private void aniadirContacto() throws Exception { // metodo para a?adir contactos
         validNombre();
         validNum();
@@ -76,7 +75,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText())); //agrega al mapa
         this.BarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " aniadido correctamente");
     }
-    
+
     private void modificarContacto() throws Exception {
         validNombre();
         for (String nombre : agenda.keySet()) {
@@ -88,14 +87,14 @@ public class GUIAgenda extends javax.swing.JFrame {
         }
         throw new Exception("Este nombre no esta registrado");
     }
-    
+
     private void conseguirNombreaMod() {
         this.nombreAMod = JOptionPane.showInputDialog(this, "Introduzca el nombre que desea modificar");
-        
+
         while (this.nombreAMod == null || this.nombreAMod.isBlank()) {
             this.nombreAMod = JOptionPane.showInputDialog(this, "Nombre no valido, introduzca de nuevo");
         }
-        
+
         for (String nombre : agenda.keySet()) {
             if (nombreAMod.equals(nombre)) {
                 return;
@@ -103,45 +102,53 @@ public class GUIAgenda extends javax.swing.JFrame {
         }
         this.BarraDeEstado.setText("Este nombre no esta registrado");
         this.Contacto.setVisible(false);
-        
+
     }
-    
+
     private void eliminarContacto() throws Exception { //elimina el contacto que se ha elegido
         validNombre();
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
                 if (JOptionPane.showConfirmDialog(this, "Esta seguro de querer eliminar el contacto?", "Borrar", 0) == 0) {
-                    
+
                     agenda.remove(nombre);
                     this.BarraDeEstado.setText("Contacto " + nombre + " borrado correctamente");
+                    mostrarAgenda();
                 }
                 return;
-                
+
             }
         }
-        
+
         throw new Exception("Este nombre no esta registrado");
     }
-    
+
     private void buscarContacto() throws Exception {
         validNombre();
-        
+
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
                 this.BarraDeEstado.setText("El numero de telefono asociado es: " + String.valueOf(agenda.get(nombre)));
                 return;
             }
         }
-        
+
         throw new Exception("Este nombre no esta registrado");
     }
-    
-    private void listar() {
+
+    private void mostrarAgenda() {
+        modelo = new DefaultListModel<>();
         for (String nombre : agenda.keySet()) {
             Contacto c = new Contacto(nombre, agenda.get(nombre));
             modelo.addElement(c);
         }
+
         jList.setModel(modelo);
+        this.jLabelCantidad.setText("Hay " + String.valueOf(agenda.size()) + " contactos");
+    }
+
+    private void listar() {
+
     }
 
     /**
@@ -386,15 +393,19 @@ public class GUIAgenda extends javax.swing.JFrame {
             if (aniadir) {
                 aniadirContacto();
                 this.Contacto.setVisible(false);
+                mostrarAgenda();
             } else if (borrar) {
                 eliminarContacto();
                 this.Contacto.setVisible(false);
+                mostrarAgenda();
             } else if (modificar) {
                 modificarContacto();
                 this.Contacto.setVisible(false);
+                mostrarAgenda();
             } else if (buscar) {
                 buscarContacto();
                 this.Contacto.setVisible(false);
+
             }
         } catch (Exception ex) {
             this.BarraDeEstado.setText(ex.getMessage());
@@ -432,9 +443,8 @@ public class GUIAgenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
-        modelo.clear();
+        mostrarAgenda();
         listar();
-        this.jLabelCantidad.setText("Hay " + String.valueOf(agenda.size()) + " contactos");
     }//GEN-LAST:event_jMenuItemListarActionPerformed
 
     private void jMenuItemVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVaciarActionPerformed
@@ -448,7 +458,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         desactivarOpciones();
         this.Contacto.setVisible(false);
     }//GEN-LAST:event_jButtonCancelarActionPerformed
-    
+
     private void desactivarOpciones() {
         this.borrar = false;
         this.aniadir = false;

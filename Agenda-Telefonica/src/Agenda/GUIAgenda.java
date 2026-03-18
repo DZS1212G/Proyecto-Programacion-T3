@@ -1,5 +1,7 @@
 package Agenda;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.DefaultListModel;
@@ -39,11 +41,18 @@ public class GUIAgenda extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.Contacto.setVisible(false); //desaparezco los campos para introducir y que se activen segun la funcion
         this.BarraDeEstado.setText("Bienvenido a la Agenda");
+
     }
 
-    private void validContacto() throws Exception { //validacion general de los contactos
-        if (this.jTextFieldNombre.getText().isBlank() || this.jTextFieldNombre.getText() == null || this.jTextFieldTelefono.getText().isBlank() || this.jTextFieldTelefono.getText() == null) {
-            throw new Exception("Alguna casilla no tiene texto valido");
+    private void validNombre() throws Exception { //validacion del nombre
+        if (this.jTextFieldNombre.getText().isBlank() || this.jTextFieldNombre.getText() == null) {
+            throw new Exception("La casilla del nombre esta vacia");
+        }
+    }
+
+    private void validNum() throws Exception {
+        if (this.jTextFieldTelefono.getText().isBlank() || this.jTextFieldTelefono.getText() == null) {
+            throw new Exception("La casilla del numero esta vacia");
         } else {
             if (!buscar) {
                 if (!jTextFieldTelefono.getText().matches("\\d{9}")) { //valida si la cadena se trata de 9 numeros enteros
@@ -55,44 +64,70 @@ public class GUIAgenda extends javax.swing.JFrame {
     }
 
     private void aniadirContacto() throws Exception { // metodo para a?adir contactos
-        validContacto();
+        validNombre();
+        validNum();
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) { //si encuentra un nombre igual en el mapa te pregunta si quieres modificarlo
                 if (JOptionPane.showConfirmDialog(this, "Este nombre ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
                     nombreAMod = nombre;
                     modificarContacto();
+                } else {
+                    throw new Exception("No se a?adio ningun contacto");
                 }
             }
         }
         agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText())); //agrega al mapa
+        this.BarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " aniadido correctamente");
     }
 
     private void modificarContacto() throws Exception {
+        validNombre();
         for (String nombre : agenda.keySet()) {
             if (nombreAMod.equals(nombre)) {
-                int numero = Integer.parseInt(jTextFieldTelefono.getText());
-                agenda.replace(jTextFieldNombre.getText(), numero);
+                agenda.replace(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText()));
                 this.BarraDeEstado.setText("Nombre Modificado Correctamente");
                 return;
             }
         }
-        JOptionPane.showMessageDialog(this, "Este nombre no esta registrado", "Error", 0);
+        throw new Exception("Este nombre no esta registrado");
+    }
+
+    private void conseguirNombreaMod() {
+        this.nombreAMod = JOptionPane.showInputDialog(this, "Introduzca el nombre que desea modificar");
+
+        while (this.nombreAMod == null || this.nombreAMod.isBlank()) {
+            this.nombreAMod = JOptionPane.showInputDialog(this, "Nombre no valido, introduzca de nuevo");
+        }
+
+        for (String nombre : agenda.keySet()) {
+            if (nombreAMod.equals(nombre)) {
+                return;
+            }
+            this.BarraDeEstado.setText("Este nombre no esta registrado");
+            desactivarOpciones();
+        }
+
     }
 
     private void eliminarContacto() throws Exception { //elimina el contacto que se ha elegido
-        validContacto();
+        validNombre();
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
-                agenda.remove(nombre);
+                if (JOptionPane.showConfirmDialog(this, "Esta seguro de querer eliminar el contacto?", "Borrar", 0) == 0) {
+
+                    agenda.remove(nombre);
+                    this.BarraDeEstado.setText("Contacto " + nombre + " borrado correctamente");
+                }
                 return;
+
             }
         }
 
-        JOptionPane.showMessageDialog(this, "Este nombre no esta registrado", "Error", 0);
+        throw new Exception("Este nombre no esta registrado");
     }
 
     private void buscarContacto() throws Exception {
-        validContacto();
+        validNombre();
 
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
@@ -100,7 +135,16 @@ public class GUIAgenda extends javax.swing.JFrame {
                 return;
             }
         }
-        this.BarraDeEstado.setText("Este nombre no esta registrado");
+
+        throw new Exception("Este nombre no esta registrado");
+    }
+
+    private void listar() {
+        for (String nombre : agenda.keySet()) {
+            Contacto c = new Contacto(nombre, agenda.get(nombre));
+            modelo.addElement(c);
+        }
+        jList.setModel(modelo);
     }
 
     /**
@@ -357,7 +401,6 @@ public class GUIAgenda extends javax.swing.JFrame {
             }
         } catch (Exception ex) {
             this.BarraDeEstado.setText(ex.getMessage());
-            System.out.println(ex.getMessage());
         }
 
     }//GEN-LAST:event_jButtonAceptarActionPerformed
@@ -384,7 +427,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         desactivarOpciones();
         this.Contacto.setVisible(true);
         this.modificar = true;
-        this.nombreAMod = JOptionPane.showInputDialog(this, "Introduzca el nombre que desea buscar", DISPOSE_ON_CLOSE);
+        conseguirNombreaMod();
     }//GEN-LAST:event_jMenuItemModificarActionPerformed
 
     private void jMenuItemBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBorrarActionPerformed
@@ -396,12 +439,9 @@ public class GUIAgenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
+
         modelo.clear();
-        for (String nombre : agenda.keySet()) {
-            Contacto c = new Contacto(nombre, agenda.get(nombre));
-            modelo.addElement(c);
-        }
-        jList.setModel(modelo);
+        listar();
         this.jLabelCantidad.setText("Hay " + String.valueOf(agenda.size()) + " contactos");
     }//GEN-LAST:event_jMenuItemListarActionPerformed
 
@@ -428,6 +468,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         this.jLabelTelefono.setVisible(true);
         this.jTextFieldTelefono.setVisible(true);
         this.nombreAMod = null;
+        this.Contacto.setVisible(true);
     }
     /**
      * @param args the command line arguments

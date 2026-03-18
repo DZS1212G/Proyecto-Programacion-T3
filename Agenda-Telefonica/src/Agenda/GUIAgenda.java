@@ -15,33 +15,33 @@ import javax.swing.JOptionPane;
  */
 public class GUIAgenda extends javax.swing.JFrame {
 
-    private DefaultListModel<Contacto> modelo;
-    private boolean aniadir;
-    private boolean buscar;
-    private boolean modificar;
-    private boolean borrar;
-    private String nombreAMod;
-    Map<String, Integer> agenda;
+    private DefaultListModel<Contacto> modelo; //modelo creado para la jList
+    private boolean aniadir; //boolean que indica que se ha activado el modo a?adir
+    private boolean buscar; //boolean que indica que se ha activado el modo buscar
+    private boolean modificar; //boolean que indica que se ha activado el modo modificar
+    private boolean borrar; //boolean que indica que se ha activado el modo borrar
+    private String nombreAMod; //Cadena que sive para seleccionar que contacto se va a editar
+    Map<String, Integer> agenda; //Mapa que almacena nombres y numero de los contactos
 
     /**
      * Creates new form GUIAgenda
      */
     public GUIAgenda() {
         initComponents();
-        agenda = new LinkedHashMap<>();
+        agenda = new LinkedHashMap<>(); //creo el modelo y el mapa
         modelo = new DefaultListModel<>();
         setFrame();
     }
 
     private void setFrame() {
-        this.setTitle("Agenda 1? DAM GF");
+        this.setTitle("Agenda 1 DAM GF");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.Contacto.setVisible(false);
+        this.Contacto.setVisible(false); //desaparezco los campos para introducir y que se activen segun la funcion
         this.BarraDeEstado.setText("Bienvenido a la Agenda");
     }
 
-    private void validContacto() throws Exception {
+    private void validContacto() throws Exception { //validacion general de los contactos
         if (this.jTextFieldNombre.getText().isBlank() || this.jTextFieldNombre.getText() == null || this.jTextFieldTelefono.getText().isBlank() || this.jTextFieldTelefono.getText() == null) {
             throw new Exception("Alguna casilla no tiene texto valido");
         } else {
@@ -54,19 +54,17 @@ public class GUIAgenda extends javax.swing.JFrame {
         }
     }
 
-    private void aniadirContacto() throws Exception {
+    private void aniadirContacto() throws Exception { // metodo para a?adir contactos
         validContacto();
         for (String nombre : agenda.keySet()) {
-            if (jTextFieldNombre.getText().equals(nombre)) {
+            if (jTextFieldNombre.getText().equals(nombre)) { //si encuentra un nombre igual en el mapa te pregunta si quieres modificarlo
                 if (JOptionPane.showConfirmDialog(this, "Este nombre ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
                     nombreAMod = nombre;
                     modificarContacto();
                 }
             }
         }
-        agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText()));
-        modelo.addElement(new Contacto(jTextFieldNombre.getText(), Integer.parseInt(jTextFieldTelefono.getText())));
-        System.out.println(modelo);
+        agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText())); //agrega al mapa
     }
 
     private void modificarContacto() throws Exception {
@@ -81,13 +79,10 @@ public class GUIAgenda extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Este nombre no esta registrado", "Error", 0);
     }
 
-    private void eliminarContacto() throws Exception {
+    private void eliminarContacto() throws Exception { //elimina el contacto que se ha elegido
         validContacto();
         for (String nombre : agenda.keySet()) {
             if (jTextFieldNombre.getText().equals(nombre)) {
-
-                modelo.removeElement(new Contacto(nombre, agenda.get(nombre)));
-                System.out.println(modelo);
                 agenda.remove(nombre);
                 return;
             }
@@ -131,6 +126,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         jLabelTelefono = new javax.swing.JLabel();
         jTextFieldNombre = new javax.swing.JTextField();
         jTextFieldTelefono = new javax.swing.JTextField();
+        jLabelCantidad = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenuContacto = new javax.swing.JMenu();
         jMenuItemAniadir = new javax.swing.JMenuItem();
@@ -172,6 +168,11 @@ public class GUIAgenda extends javax.swing.JFrame {
         });
 
         jButtonCancelar.setText("Cancelar");
+        jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarActionPerformed(evt);
+            }
+        });
 
         jLabelNombre.setText("Nombre:");
 
@@ -197,7 +198,7 @@ public class GUIAgenda extends javax.swing.JFrame {
                         .addGroup(ContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                             .addComponent(jTextFieldTelefono))))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         ContactoLayout.setVerticalGroup(
             ContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,25 +222,31 @@ public class GUIAgenda extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Contacto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Contacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(Contacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Agenda, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(13, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Agenda, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabelCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -247,10 +254,10 @@ public class GUIAgenda extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Agenda)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 51, Short.MAX_VALUE)))
+                    .addComponent(Agenda, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -342,7 +349,7 @@ public class GUIAgenda extends javax.swing.JFrame {
                 eliminarContacto();
                 this.Contacto.setVisible(false);
             } else if (modificar) {
-                modificarContacto(nombreAMod);
+                modificarContacto();
                 this.Contacto.setVisible(false);
             } else if (buscar) {
                 buscarContacto();
@@ -383,11 +390,19 @@ public class GUIAgenda extends javax.swing.JFrame {
     private void jMenuItemBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBorrarActionPerformed
         desactivarOpciones();
         this.Contacto.setVisible(true);
+        this.jLabelTelefono.setVisible(false);
+        this.jTextFieldTelefono.setVisible(false);
         this.borrar = true;
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
-        this.jList.setModel(modelo);
+        modelo.clear();
+        for (String nombre : agenda.keySet()) {
+            Contacto c = new Contacto(nombre, agenda.get(nombre));
+            modelo.addElement(c);
+        }
+        jList.setModel(modelo);
+        this.jLabelCantidad.setText("Hay " + String.valueOf(agenda.size()) + " contactos");
     }//GEN-LAST:event_jMenuItemListarActionPerformed
 
     private void jMenuItemVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVaciarActionPerformed
@@ -396,6 +411,11 @@ public class GUIAgenda extends javax.swing.JFrame {
             modelo.clear();
         }
     }//GEN-LAST:event_jMenuItemVaciarActionPerformed
+
+    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
+        desactivarOpciones();
+        this.Contacto.setVisible(false);
+    }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void desactivarOpciones() {
         this.borrar = false;
@@ -419,6 +439,7 @@ public class GUIAgenda extends javax.swing.JFrame {
     private javax.swing.JPanel Contacto;
     private javax.swing.JButton jButtonAceptar;
     private javax.swing.JButton jButtonCancelar;
+    private javax.swing.JLabel jLabelCantidad;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelTelefono;
     private javax.swing.JList<Contacto> jList;

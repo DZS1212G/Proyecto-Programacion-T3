@@ -1,6 +1,13 @@
 package Agenda;
 
+<<<<<<< HEAD
 import java.util.LinkedHashMap;
+=======
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+>>>>>>> origin/main
 import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -23,6 +30,7 @@ public class GUIAgenda extends javax.swing.JFrame {
     private boolean borrar; //boolean que indica que se ha activado el modo borrar
     private String nombreAMod; //Cadena que sive para seleccionar que contacto se va a editar
     Map<String, Integer> agenda; //Mapa que almacena nombres y numero de los contactos
+    private Comparator<Contacto> miComparator;
 
     /**
      * Creates new form GUIAgenda
@@ -138,6 +146,7 @@ public class GUIAgenda extends javax.swing.JFrame {
     }
 
     private void listar() {
+<<<<<<< HEAD
         Map<String, Integer> mapaOrdenado = new TreeMap<>(agenda);
         modelo = new DefaultListModel<>();
         for (String nombre : mapaOrdenado.keySet()) {
@@ -147,6 +156,9 @@ public class GUIAgenda extends javax.swing.JFrame {
 
         jList.setModel(modelo);
         this.jLabelCantidad.setText("Hay " + String.valueOf(mapaOrdenado.size()) + " contactos");
+=======
+       
+>>>>>>> origin/main
     }
 
     /**
@@ -442,6 +454,10 @@ public class GUIAgenda extends javax.swing.JFrame {
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
         mostrarAgenda();
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
         listar();
     }//GEN-LAST:event_jMenuItemListarActionPerformed
 

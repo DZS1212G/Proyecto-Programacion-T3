@@ -1,6 +1,6 @@
 package Agenda;
 
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -29,7 +29,7 @@ public class GUIAgenda extends javax.swing.JFrame {
      */
     public GUIAgenda() {
         initComponents();
-        agenda = new TreeMap<>(); //creo el modelo y el mapa
+        agenda = new LinkedHashMap<>(); //creo el modelo y el mapa
         setFrame();
     }
 
@@ -138,7 +138,15 @@ public class GUIAgenda extends javax.swing.JFrame {
     }
 
     private void listar() {
+        Map<String, Integer> mapaOrdenado = new TreeMap<>(agenda);
+        modelo = new DefaultListModel<>();
+        for (String nombre : mapaOrdenado.keySet()) {
+            Contacto c = new Contacto(nombre, mapaOrdenado.get(nombre));
+            modelo.addElement(c);
+        }
 
+        jList.setModel(modelo);
+        this.jLabelCantidad.setText("Hay " + String.valueOf(mapaOrdenado.size()) + " contactos");
     }
 
     /**
@@ -434,7 +442,6 @@ public class GUIAgenda extends javax.swing.JFrame {
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
         mostrarAgenda();
-        Collections.sort(agenda);
         listar();
     }//GEN-LAST:event_jMenuItemListarActionPerformed
 

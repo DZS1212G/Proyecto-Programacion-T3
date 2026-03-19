@@ -86,10 +86,10 @@ public class GUIAgenda extends javax.swing.JFrame {
     }
 
     private void conseguirNombreaMod() {
-        this.nombreAMod = JOptionPane.showInputDialog(this, "Introduzca el nombre que desea modificar");
+        this.nombreAMod = JOptionPane.showInputDialog(this, "Introduzca el nombre que desea modificar", "Modificar", 3);
 
         while (this.nombreAMod == null || this.nombreAMod.isBlank()) {
-            this.nombreAMod = JOptionPane.showInputDialog(this, "Nombre no valido, introduzca de nuevo");
+            this.nombreAMod = JOptionPane.showInputDialog(this, "Nombre no valido, introduzca de nuevo", "Modificar", 3);
         }
 
         if (!agenda.containsKey(nombreAMod)) {
@@ -397,18 +397,22 @@ public class GUIAgenda extends javax.swing.JFrame {
         try {
             this.jLabelBarraDeEstado.setForeground(Color.GREEN);
             if (aniadir) {
+                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 aniadirContacto();
                 this.jPanelContacto.setVisible(false);
                 mostrarAgenda();
             } else if (borrar) {
+                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 eliminarContacto();
                 this.jPanelContacto.setVisible(false);
                 mostrarAgenda();
             } else if (modificar) {
+                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 modificarContacto();
                 this.jPanelContacto.setVisible(false);
                 mostrarAgenda();
             } else if (buscar) {
+                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 buscarContacto();
                 this.jPanelContacto.setVisible(false);
             }

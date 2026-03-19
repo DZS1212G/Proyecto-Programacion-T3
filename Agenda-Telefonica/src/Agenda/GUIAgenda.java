@@ -439,10 +439,14 @@ public class GUIAgenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
+        desactivarOpciones();
+        this.jPanelContacto.setVisible(false);
         listar();
     }//GEN-LAST:event_jMenuItemListarActionPerformed
 
     private void jMenuItemVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVaciarActionPerformed
+        desactivarOpciones();
+        this.jPanelContacto.setVisible(false);
         if (JOptionPane.showConfirmDialog(this, "Estas seguro de querer eliminar la lista por completo?", "ELIMINAR", 0) == 0) {
             agenda.clear();
             mostrarAgenda();
@@ -466,6 +470,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         this.jTextFieldTelefono.setVisible(true);
         this.nombreAMod = null;
         this.jPanelContacto.setVisible(true);
+        this.jLabelBarraDeEstado.setText("");
     }
     /**
      * @param args the command line arguments

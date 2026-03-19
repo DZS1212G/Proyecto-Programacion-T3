@@ -1,5 +1,6 @@
 package Agenda;
 
+import java.awt.Color;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.DefaultListModel;
@@ -94,8 +95,10 @@ public class GUIAgenda extends javax.swing.JFrame {
         if (!agenda.containsKey(nombreAMod)) {
             this.jLabelBarraDeEstado.setText("Este nombre no esta registrado");
             this.jPanelContacto.setVisible(false);
+        } else {
+            this.jTextFieldNombre.setText(nombreAMod);
+            this.jTextFieldTelefono.setText(String.valueOf(agenda.get(nombreAMod)));
         }
-
     }
 
     private void eliminarContacto() throws Exception { //elimina el contacto que se ha elegido
@@ -195,6 +198,8 @@ public class GUIAgenda extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabelBarraDeEstado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         getContentPane().add(jLabelBarraDeEstado, java.awt.BorderLayout.PAGE_END);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -277,6 +282,8 @@ public class GUIAgenda extends javax.swing.JFrame {
                 .addComponent(jPanelContacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 12, Short.MAX_VALUE))
         );
+
+        jLabelCantidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -385,25 +392,31 @@ public class GUIAgenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
+
         try {
             if (aniadir) {
+                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 aniadirContacto();
                 this.jPanelContacto.setVisible(false);
                 mostrarAgenda();
             } else if (borrar) {
+                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 eliminarContacto();
                 this.jPanelContacto.setVisible(false);
                 mostrarAgenda();
             } else if (modificar) {
+                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 modificarContacto();
                 this.jPanelContacto.setVisible(false);
                 mostrarAgenda();
             } else if (buscar) {
+                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 buscarContacto();
                 this.jPanelContacto.setVisible(false);
 
             }
         } catch (Exception ex) {
+            this.jLabelBarraDeEstado.setForeground(Color.red);
             this.jLabelBarraDeEstado.setText(ex.getMessage());
         }
 

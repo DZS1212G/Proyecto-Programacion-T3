@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
  * @author zapsobdi
  */
 public class Contacto {
-
+    //atributos
     private String nombre;
     private int telefono;
     private LocalDateTime fechaRegistro;
 
-    public Contacto(String nombre, int telefono) {
+    public Contacto(String nombre, int telefono) { //constructor parametrizado de un contacto
         this.nombre = nombre;
         this.telefono = telefono;
         this.fechaRegistro = LocalDateTime.now();
     }
-
+    //getter y setters
     public String getNombre() {
         return nombre;
     }
@@ -45,7 +45,7 @@ public class Contacto {
     public void setFechaRegistro(LocalDateTime fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
-
+    //metodo toString
     @Override
     public String toString() {
         return nombre + " " + telefono;

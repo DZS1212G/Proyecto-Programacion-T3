@@ -31,10 +31,11 @@ public class GUIAgenda extends javax.swing.JFrame {
     public GUIAgenda() {
         initComponents();
         agenda = new LinkedHashMap<>(); //creo el modelo y el mapa
+        modelo = new DefaultListModel<>();
         setFrame();
     }
 
-    private void setFrame() {
+    private void setFrame() { //metodo inicial para dar algo de estructura a la ventana
         this.setTitle("Agenda 1 DAM GF");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -48,7 +49,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         }
     }
 
-    private void validNum() throws Exception {
+    private void validNum() throws Exception { //validacion del numero de telefono
         if (this.jTextFieldTelefono.getText().isBlank() || this.jTextFieldTelefono.getText() == null) {
             throw new Exception("La casilla del numero esta vacia");
         } else {
@@ -70,22 +71,23 @@ public class GUIAgenda extends javax.swing.JFrame {
                 nombreAMod = jTextFieldNombre.getText();
                 modificarContacto();
             } else {
-                throw new Exception("No se a?adio ningun contacto");
+                throw new Exception("No se aniadio ningun contacto");
             }
         }
 
         agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText())); //agrega al mapa
-        this.jLabelBarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " aniadido correctamente");
+        this.jLabelBarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " aniadido correctamente"); //mensaje que muestra que fue exitoso
     }
 
-    private void modificarContacto() throws Exception {
+    private void modificarContacto() throws Exception { //metodo que modifica el contacto una vez se ha conseguido el nombre
         validNombre();
+        validNum();
         agenda.remove(nombreAMod, agenda.get(nombreAMod));
         agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText()));
         this.jLabelBarraDeEstado.setText("Nombre Modificado Correctamente");
     }
 
-    private void conseguirNombreaMod() {
+    private void conseguirNombreaMod() { //metodo que lanza un jpane para conseguir aquel contacto que se quiera modificar y se a?ade a la variable nombreAMod
         this.nombreAMod = JOptionPane.showInputDialog(this, "Introduzca el nombre que desea modificar", "Modificar", 3);
 
         while (this.nombreAMod == null || this.nombreAMod.isBlank()) {
@@ -117,19 +119,19 @@ public class GUIAgenda extends javax.swing.JFrame {
         throw new Exception("Este nombre no esta registrado");
     }
 
-    private void buscarContacto() throws Exception {
+    private void buscarContacto() throws Exception { //metodo que recoge el nombre y te devuelve el numero
         validNombre();
 
         if (agenda.containsKey(jTextFieldNombre.getText())) {
             this.jLabelBarraDeEstado.setText("El numero de telefono asociado es: " + String.valueOf(agenda.get(jTextFieldNombre.getText())));
-            return;
-        }
 
-        throw new Exception("Este nombre no esta registrado");
+        } else {
+            throw new Exception("Este nombre no esta registrado");
+        }
     }
 
-    private void mostrarAgenda() {
-        modelo = new DefaultListModel<>();
+    private void mostrarAgenda() { //metodo que sirve para imprimir la agenda en el jlist limpiando el modelo
+        modelo.clear();
         for (String nombre : agenda.keySet()) {
             Contacto c = new Contacto(nombre, agenda.get(nombre));
             modelo.addElement(c);
@@ -139,7 +141,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         this.jLabelCantidad.setText("Hay " + String.valueOf(agenda.size()) + " contactos");
     }
 
-    private void listar() {
+    private void listar() { //metodo que ordena el mapa convirtiendolo en un tree map que por defecto viene ordenado
         Map<String, Integer> mapaOrdenado = new TreeMap<>(agenda);
         modelo = new DefaultListModel<>();
         for (String nombre : mapaOrdenado.keySet()) {
@@ -160,8 +162,6 @@ public class GUIAgenda extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jProgressBar1 = new javax.swing.JProgressBar();
-        jPanel1 = new javax.swing.JPanel();
         jLabelBarraDeEstado = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPaneAgenda = new javax.swing.JScrollPane();
@@ -186,17 +186,6 @@ public class GUIAgenda extends javax.swing.JFrame {
         jMenuItemVaciar = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItemSalir = new javax.swing.JMenuItem();
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -393,9 +382,9 @@ public class GUIAgenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
-
+//boton aceptar que segun que este seleccionado ejecuta un metodo u otro
+//en cada uno se devuelve el color original a la barra de estado
         try {
-            this.jLabelBarraDeEstado.setForeground(Color.GREEN);
             if (aniadir) {
                 this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 aniadirContacto();
@@ -417,49 +406,49 @@ public class GUIAgenda extends javax.swing.JFrame {
                 this.jPanelContacto.setVisible(false);
             }
         } catch (Exception ex) {
-            this.jLabelBarraDeEstado.setForeground(Color.red);
+            this.jLabelBarraDeEstado.setForeground(Color.red); //siempre que pille un error salta y lo pone en rojo
             this.jLabelBarraDeEstado.setText(ex.getMessage());
         }
 
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
     private void jMenuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSalirActionPerformed
-        this.dispose();
+        this.dispose(); //cierra la ventana
     }//GEN-LAST:event_jMenuItemSalirActionPerformed
 
     private void jMenuItemAniadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAniadirActionPerformed
-        desactivarOpciones();
+        desactivarOpciones(); //activa la funcion aniadir
         this.aniadir = true;
     }//GEN-LAST:event_jMenuItemAniadirActionPerformed
 
     private void jMenuItemBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuscarActionPerformed
-        desactivarOpciones();
+        desactivarOpciones(); //activa la funcion buscar desactivando los campos de telefono al ser ineccesarios
         this.jLabelTelefono.setVisible(false);
         this.jTextFieldTelefono.setVisible(false);
         this.buscar = true;
     }//GEN-LAST:event_jMenuItemBuscarActionPerformed
 
     private void jMenuItemModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModificarActionPerformed
-        desactivarOpciones();
+        desactivarOpciones(); //activa la funcion modificar y llama al metodo que consigue el contacto que se desea modificar
         this.modificar = true;
         conseguirNombreaMod();
     }//GEN-LAST:event_jMenuItemModificarActionPerformed
 
     private void jMenuItemBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBorrarActionPerformed
-        desactivarOpciones();
+        desactivarOpciones(); //activa la funcion borrar desactivando los campos de telefono al ser ineccesarios
         this.jLabelTelefono.setVisible(false);
         this.jTextFieldTelefono.setVisible(false);
         this.borrar = true;
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
-        desactivarOpciones();
+        desactivarOpciones(); //accede al metodo listar
         this.jPanelContacto.setVisible(false);
         listar();
     }//GEN-LAST:event_jMenuItemListarActionPerformed
 
     private void jMenuItemVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVaciarActionPerformed
-        desactivarOpciones();
+        desactivarOpciones(); //primero confirma si se quiere eliminar, si es correcta elimina el mapa
         this.jPanelContacto.setVisible(false);
         if (JOptionPane.showConfirmDialog(this, "Estas seguro de querer eliminar la lista por completo?", "ELIMINAR", 0) == 0) {
             agenda.clear();
@@ -475,6 +464,7 @@ public class GUIAgenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void desactivarOpciones() {
+        //metodo global el cual deja todas las opciones por defecto para que no haya problemas con los booleans que activan los metodos
         this.borrar = false;
         this.aniadir = false;
         this.modificar = false;
@@ -509,11 +499,9 @@ public class GUIAgenda extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemModificar;
     private javax.swing.JMenuItem jMenuItemSalir;
     private javax.swing.JMenuItem jMenuItemVaciar;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanelContacto;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPaneAgenda;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JTextField jTextFieldNombre;

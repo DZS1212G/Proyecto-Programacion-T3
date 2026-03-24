@@ -71,7 +71,18 @@ public class GUIAgenda extends javax.swing.JFrame {
                 nombreAMod = jTextFieldNombre.getText();
                 modificarContacto();
             } else {
-                throw new Exception("No se aniadio ningun contacto");
+                throw new Exception("No se modifico ningun contacto");
+            }
+        } else if (agenda.containsValue(Integer.valueOf(jTextFieldTelefono.getText()))) {
+            for (String nombre : agenda.keySet()) {
+                if (agenda.get(nombre).equals(Integer.valueOf(jTextFieldTelefono.getText()))) {
+                    if (JOptionPane.showConfirmDialog(this, "Este numero ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
+                        nombreAMod = nombre;
+                        modificarContacto();
+                    } else {
+                        throw new Exception("No se modifico ningun contacto");
+                    }
+                }
             }
         }
 

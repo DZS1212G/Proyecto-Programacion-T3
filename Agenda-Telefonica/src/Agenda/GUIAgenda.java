@@ -143,12 +143,14 @@ public class GUIAgenda extends javax.swing.JFrame {
 
     private void listar() { //metodo que ordena el mapa convirtiendolo en un tree map que por defecto viene ordenado
         Map<String, Integer> mapaOrdenado = new TreeMap<>(agenda);
+
         modelo = new DefaultListModel<>();
         for (String nombre : mapaOrdenado.keySet()) {
             Contacto c = new Contacto(nombre, mapaOrdenado.get(nombre));
             modelo.addElement(c);
         }
-
+        Map<String, Integer> mapaOrdenado2 = new LinkedHashMap<>(mapaOrdenado);
+        agenda = mapaOrdenado2;
         jListAgenda.setModel(modelo);
         this.jLabelCantidad.setText("Hay " + String.valueOf(mapaOrdenado.size()) + " contactos");
     }

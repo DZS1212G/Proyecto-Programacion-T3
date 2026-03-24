@@ -160,8 +160,8 @@ public class GUIAgenda extends javax.swing.JFrame {
             Contacto c = new Contacto(nombre, mapaOrdenado.get(nombre));
             modelo.addElement(c);
         }
-        Map<String, Integer> mapaOrdenado2 = new LinkedHashMap<>(mapaOrdenado);
-        agenda = mapaOrdenado2;
+        
+        agenda = new LinkedHashMap<>(mapaOrdenado);
         jListAgenda.setModel(modelo);
         this.jLabelCantidad.setText("Hay " + String.valueOf(mapaOrdenado.size()) + " contactos");
     }

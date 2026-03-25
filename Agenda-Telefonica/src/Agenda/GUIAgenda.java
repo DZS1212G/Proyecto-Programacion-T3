@@ -16,14 +16,14 @@ import java.util.TreeMap;
  * @author zapsobdi
  */
 public class GUIAgenda extends javax.swing.JFrame {
-
+    
     private DefaultListModel<Contacto> modelo; //modelo creado para la jList
     private boolean aniadir; //boolean que indica que se ha activado el modo a?adir
     private boolean buscar; //boolean que indica que se ha activado el modo buscar
     private boolean modificar; //boolean que indica que se ha activado el modo modificar
     private boolean borrar; //boolean que indica que se ha activado el modo borrar
     private String nombreAMod; //Cadena que sive para seleccionar que contacto se va a editar
-    Map<String, Integer> agenda; //Mapa que almacena nombres y numero de los contactos
+    Map<String, Contacto> agenda; //Mapa que almacena nombres y numero de los contactos
 
     /**
      * Creates new form GUIAgenda
@@ -34,7 +34,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         modelo = new DefaultListModel<>();
         setFrame();
     }
-
+    
     private void setFrame() { //metodo inicial para dar algo de estructura a la ventana
         this.setTitle("Agenda 1 DAM GF");
         this.setResizable(false);
@@ -42,13 +42,13 @@ public class GUIAgenda extends javax.swing.JFrame {
         this.jPanelContacto.setVisible(false); //desaparezco los campos para introducir y que se activen segun la funcion
         this.jLabelBarraDeEstado.setText("Bienvenido a la Agenda");
     }
-
+    
     private void validNombre() throws Exception { //validacion del nombre
         if (this.jTextFieldNombre.getText().isBlank() || this.jTextFieldNombre.getText() == null) { //valida que los datos no esten vacios
             throw new Exception("La casilla del nombre esta vacia");
         }
     }
-
+    
     private void validNum() throws Exception { //validacion del numero de telefono
         if (this.jTextFieldTelefono.getText().isBlank() || this.jTextFieldTelefono.getText() == null) { //valida que los datos no esten vacios
             throw new Exception("La casilla del numero esta vacia");
@@ -58,14 +58,14 @@ public class GUIAgenda extends javax.swing.JFrame {
                     throw new Exception("Su telefono no contiene un formato adecuado (9 Numeros)");
                 }
             }
-
+            
         }
     }
-
+    
     private void aniadirContacto() throws Exception { // metodo para a?adir contactos
         validNombre();
         validNum();
-
+        
         if (agenda.containsKey(jTextFieldNombre.getText())) { //si encuentra un nombre igual en el mapa te pregunta si quieres modificarlo
             if (JOptionPane.showConfirmDialog(this, "Este nombre ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
                 nombreAMod = jTextFieldNombre.getText();
@@ -74,36 +74,42 @@ public class GUIAgenda extends javax.swing.JFrame {
                 throw new Exception("No se modifico ningun contacto");
             }
         }
-
-        agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText())); //agrega al mapa
+        Contacto c = new Contacto(jTextFieldNombre.getText(), Integer.parseInt(jTextFieldTelefono.getText()));
+        agenda.put(jTextFieldNombre.getText(), c); //agrega al mapa
         this.jLabelBarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " aniadido correctamente"); //mensaje que muestra que fue exitoso
     }
-
+    
     private void modificarContacto() throws Exception { //metodo que modifica el contacto una vez se ha conseguido el nombre
         validNombre();
         validNum();
-        agenda.remove(nombreAMod, agenda.get(nombreAMod));
-        agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText()));
+        Contacto newContact = new Contacto(jTextFieldNombre.getText(), Integer.parseInt(jTextFieldTelefono.getText()));
+        for (Contacto cont : agenda.values()) {
+            if (cont.getNombre().equals(nombreAMod)) {
+                newContact.setFechaRegistro(cont.getFechaRegistro());
+                agenda.replace(nombreAMod, cont, newContact);
+                return;
+            }
+        }
         this.jLabelBarraDeEstado.setText("Nombre Modificado Correctamente");
     }
-
+    
     private void conseguirNombreaMod() { //metodo que lanza un jpane para conseguir aquel contacto que se quiera modificar y se a?ade a la variable nombreAMod
         this.nombreAMod = JOptionPane.showInputDialog(this, "Introduzca el nombre que desea modificar", "Modificar", 3);
-
+        
         while (this.nombreAMod == null || this.nombreAMod.isBlank()) {
             this.nombreAMod = JOptionPane.showInputDialog(this, "Nombre no valido, introduzca de nuevo", "Modificar", 3);
         }
-
+        
         if (!agenda.containsKey(nombreAMod)) {
             this.jLabelBarraDeEstado.setForeground(Color.red);
             this.jLabelBarraDeEstado.setText("Este nombre no esta registrado");
             this.jPanelContacto.setVisible(false);
         } else {
             this.jTextFieldNombre.setText(nombreAMod);
-            this.jTextFieldTelefono.setText(String.valueOf(agenda.get(nombreAMod)));
+            this.jTextFieldTelefono.setText(String.valueOf(agenda.get(nombreAMod).getTelefono()));
         }
     }
-
+    
     private void eliminarContacto() throws Exception { //elimina el contacto que se ha elegido
         validNombre();
         if (agenda.containsKey(jTextFieldNombre.getText())) { //compruebo si el contacto existe
@@ -112,36 +118,35 @@ public class GUIAgenda extends javax.swing.JFrame {
                 this.jLabelBarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " borrado correctamente");
             }
             return;
-
+            
         }
-
+        
         throw new Exception("Este nombre no esta registrado");
     }
-
+    
     private void buscarContacto() throws Exception { //metodo que recoge el nombre y te devuelve el numero
         validNombre();
-
+        
         if (agenda.containsKey(jTextFieldNombre.getText())) { //si lo encuentra en la agenda que nos devuelva el nombre
             this.jLabelBarraDeEstado.setText("El numero de telefono asociado es: " + String.valueOf(agenda.get(jTextFieldNombre.getText())));
-
+            
         } else {
             throw new Exception("Este nombre no esta registrado");
         }
     }
-
+    
     private void mostrarAgenda() { //metodo que sirve para imprimir la agenda en el jlist limpiando el modelo
         modelo.clear(); //limpio el modelo para iniciar de 0
-        for (String nombre : agenda.keySet()) { //un bule for each que almacena todos los conactos y los a?ade al modelo 
-            Contacto c = new Contacto(nombre, agenda.get(nombre));
-            modelo.addElement(c);
+        for (Contacto nombre : agenda.values()) { //un bule for each que almacena todos los conactos y los a?ade al modelo 
+            modelo.addElement(nombre);
         }
-
+        
         jListAgenda.setModel(modelo);
         this.jLabelCantidad.setText("Hay " + String.valueOf(agenda.size()) + " contactos");
     }
-
+    
     private void listar() { //metodo que ordena el mapa convirtiendolo en un tree map que por defecto viene ordenado
-        Map<String, Integer> mapaOrdenado = new TreeMap<>(agenda); //creo un tree map debido a que estos se ordenan automaticamente por caracter ascii de la key en este caso el nombre
+        Map<String, Contacto> mapaOrdenado = new TreeMap<>(agenda); //creo un tree map debido a que estos se ordenan automaticamente por caracter ascii de la key en este caso el nombre
         agenda = new LinkedHashMap<>(mapaOrdenado); //sobrescribo el mapa original por el ordenado
         mostrarAgenda();
     }
@@ -454,7 +459,7 @@ public class GUIAgenda extends javax.swing.JFrame {
         desactivarOpciones();
         this.jPanelContacto.setVisible(false);
     }//GEN-LAST:event_jButtonCancelarActionPerformed
-
+    
     private void desactivarOpciones() {
         //metodo global el cual deja todas las opciones por defecto para que no haya problemas con los booleans que activan los metodos
         this.borrar = false; //desactivo los cuatro booleanos de los modos

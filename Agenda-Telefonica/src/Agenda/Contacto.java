@@ -1,6 +1,8 @@
 package Agenda;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
  * @author zapsobdi
  */
 public class Contacto {
+
     //atributos
     private String nombre;
     private int telefono;
@@ -21,6 +24,7 @@ public class Contacto {
         this.telefono = telefono;
         this.fechaRegistro = LocalDateTime.now();
     }
+
     //getter y setters
     public String getNombre() {
         return nombre;
@@ -45,10 +49,12 @@ public class Contacto {
     public void setFechaRegistro(LocalDateTime fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
+
     //metodo toString
     @Override
     public String toString() {
-        return nombre + " " + telefono;
+        DateTimeFormatter dtf = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT, FormatStyle.MEDIUM);
+        return nombre + " " + telefono ;
     }
 
 }

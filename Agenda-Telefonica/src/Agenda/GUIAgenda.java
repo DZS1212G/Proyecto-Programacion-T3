@@ -73,7 +73,7 @@ public class GUIAgenda extends javax.swing.JFrame {
             } else {
                 throw new Exception("No se modifico ningun contacto");
             }
-        } 
+        }
 
         agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText())); //agrega al mapa
         this.jLabelBarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " aniadido correctamente"); //mensaje que muestra que fue exitoso
@@ -215,27 +215,29 @@ public class GUIAgenda extends javax.swing.JFrame {
         jPanelContactoLayout.setHorizontalGroup(
             jPanelContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelContactoLayout.createSequentialGroup()
-                .addGroup(jPanelContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(jPanelContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelContactoLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButtonAceptar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonCancelar))
-                    .addGroup(jPanelContactoLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
                         .addGroup(jPanelContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelNombre)
                             .addComponent(jLabelTelefono))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanelContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                            .addComponent(jTextFieldTelefono))))
+                            .addGroup(jPanelContactoLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanelContactoLayout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(jTextFieldTelefono))))
+                    .addGroup(jPanelContactoLayout.createSequentialGroup()
+                        .addComponent(jButtonAceptar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonCancelar)))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanelContactoLayout.setVerticalGroup(
             jPanelContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelContactoLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap(18, Short.MAX_VALUE)
                 .addGroup(jPanelContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelNombre)
                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -243,7 +245,7 @@ public class GUIAgenda extends javax.swing.JFrame {
                 .addGroup(jPanelContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelTelefono)
                     .addComponent(jTextFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelContactoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAceptar)
                     .addComponent(jButtonCancelar))
@@ -299,7 +301,7 @@ public class GUIAgenda extends javax.swing.JFrame {
 
         jMenuContacto.setText("Contacto");
 
-        jMenuItemAniadir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemAniadir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItemAniadir.setText("Anadir");
         jMenuItemAniadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

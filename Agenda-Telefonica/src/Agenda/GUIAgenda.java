@@ -73,18 +73,7 @@ public class GUIAgenda extends javax.swing.JFrame {
             } else {
                 throw new Exception("No se modifico ningun contacto");
             }
-        } else if (agenda.containsValue(Integer.valueOf(jTextFieldTelefono.getText()))) {
-            for (String nombre : agenda.keySet()) { //recorre el mapa buscando la key de ese telefono para devolverla
-                if (agenda.get(nombre).equals(Integer.valueOf(jTextFieldTelefono.getText()))) {
-                    if (JOptionPane.showConfirmDialog(this, "Este numero ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
-                        nombreAMod = nombre;
-                        modificarContacto();
-                    } else {
-                        throw new Exception("No se modifico ningun contacto");
-                    }
-                }
-            }
-        }
+        } 
 
         agenda.put(jTextFieldNombre.getText(), Integer.valueOf(jTextFieldTelefono.getText())); //agrega al mapa
         this.jLabelBarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " aniadido correctamente"); //mensaje que muestra que fue exitoso

@@ -64,19 +64,19 @@ public class GUIAgenda extends javax.swing.JFrame {
         }
     }
 
-    private void aniadirContacto() throws Exception { // metodo para a?adir contactos
+    private void aniadirContacto() throws Exception { // metodo para aniadir contactos
         validNombre();
         validNum();
 
         if (agenda.containsKey(jTextFieldNombre.getText())) { //si encuentra un nombre igual en el mapa te pregunta si quieres modificarlo
-            if (JOptionPane.showConfirmDialog(this, "Este nombre ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
+            if (JOptionPane.showConfirmDialog(this, "Este nombre ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) { //realiza una pregunta de si o no, el 0 corresponde a SI
                 nombreAMod = jTextFieldNombre.getText();
                 modificarContacto();
             } else {
                 throw new Exception("No se modifico ningun contacto");
             }
         }
-        Contacto c = new Contacto(jTextFieldNombre.getText(), Integer.parseInt(jTextFieldTelefono.getText()));
+        Contacto c = new Contacto(jTextFieldNombre.getText(), Integer.parseInt(jTextFieldTelefono.getText()));  //creo un contacto para a?adirlo
         agenda.put(jTextFieldNombre.getText(), c); //agrega al mapa
         this.jLabelBarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " aniadido correctamente"); //mensaje que muestra que fue exitoso
     }
@@ -84,25 +84,30 @@ public class GUIAgenda extends javax.swing.JFrame {
     private void modificarContacto() throws Exception { //metodo que modifica el contacto una vez se ha conseguido el nombre
         validNombre();
         validNum();
-        for (Contacto cont : agenda.values()) {
-            if (cont.getNombre().equals(nombreAMod)) {
+        for (Contacto cont : agenda.values()) { //recorro todos los contatcos para conseguir el contacto antiguo
+            if (cont.getNombre().equals(nombreAMod)) { //cuando localiza el contacto 
                 Contacto newContact = new Contacto(jTextFieldNombre.getText(), Integer.parseInt(jTextFieldTelefono.getText()));
-                newContact.setFechaRegistro(cont.getFechaRegistro());
-                agenda.remove(cont.getNombre());
-                agenda.put(newContact.getNombre(), newContact);
+                newContact.setFechaRegistro(cont.getFechaRegistro()); //ponemos la fecha del registro anterior en el nuevo
+                agenda.remove(cont.getNombre()); //borra el anterior contacto
+                agenda.put(newContact.getNombre(), newContact); //agrega el nuevo
+                mostrarAgenda();
+                this.jLabelBarraDeEstado.setText("Contacto Modificado Correctamente");
+                return;
             }
         }
-        mostrarAgenda();
-        this.jLabelBarraDeEstado.setText("Contacto Modificado Correctamente");
+
     }
 
     private void conseguirNombreaMod() { //metodo que lanza un jpane para conseguir aquel contacto que se quiera modificar y se a?ade a la variable nombreAMod
         this.nombreAMod = JOptionPane.showInputDialog(this, "Introduzca el nombre que desea modificar", "Modificar", 3);
 
-        while (this.nombreAMod == null || this.nombreAMod.isBlank()) {
-            this.nombreAMod = JOptionPane.showInputDialog(this, "Nombre no valido, introduzca de nuevo", "Modificar", 3);
+        if (this.nombreAMod == null || this.nombreAMod.isBlank()) {
+            this.jLabelBarraDeEstado.setForeground(Color.red);
+            this.jLabelBarraDeEstado.setText("Nombre no valido");
+            this.jPanelContacto.setVisible(false);
+            return;
         }
-        for (Contacto contact : agenda.values()) {
+        for (Contacto contact : agenda.values()) { //recorro los contactos para comprobar si el nombre es real
             if (contact.getNombre().equals(nombreAMod)) {
                 this.jTextFieldNombre.setText(contact.getNombre());
                 this.jTextFieldTelefono.setText(String.valueOf(contact.getTelefono()));
@@ -120,7 +125,6 @@ public class GUIAgenda extends javax.swing.JFrame {
         validNombre();
         if (agenda.containsKey(jTextFieldNombre.getText())) { //compruebo si el contacto existe
             if (JOptionPane.showConfirmDialog(this, "Esta seguro de querer eliminar el contacto?", "Borrar", 0) == 0) { //confirmo que si quiere borrarlo
-
                 agenda.remove(jTextFieldNombre.getText());
                 this.jLabelBarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " borrado correctamente");
             }
@@ -207,7 +211,9 @@ public class GUIAgenda extends javax.swing.JFrame {
         });
         jScrollPaneAgenda.setViewportView(jListAgenda);
 
+        jPanelContacto.setBackground(new java.awt.Color(204, 204, 204));
         jPanelContacto.setBorder(javax.swing.BorderFactory.createTitledBorder("Contacto"));
+        jPanelContacto.setForeground(new java.awt.Color(0, 0, 0));
 
         jButtonAceptar.setText("Aceptar");
         jButtonAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -320,6 +326,8 @@ public class GUIAgenda extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
+
+        jMenuBar2.setBackground(new java.awt.Color(102, 102, 255));
 
         jMenuContacto.setText("Contacto");
 

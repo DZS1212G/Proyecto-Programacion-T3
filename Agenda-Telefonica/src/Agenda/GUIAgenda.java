@@ -117,9 +117,8 @@ public class GUIAgenda extends javax.swing.JFrame {
 
     private void eliminarContacto() throws Exception { //elimina el contacto que se ha elegido
         validNombre();
-        if (agenda.containsKey(jTextFieldNombre.getText())) {
-            if (JOptionPane.showConfirmDialog(this, "Esta seguro de querer eliminar el contacto?", "Borrar", 0) == 0) {
-
+        if (agenda.containsKey(jTextFieldNombre.getText())) { //compruebo si el contacto existe
+            if (JOptionPane.showConfirmDialog(this, "Esta seguro de querer eliminar el contacto?", "Borrar", 0) == 0) { //confirmo que si quiere borrarlo
                 agenda.remove(jTextFieldNombre.getText());
                 this.jLabelBarraDeEstado.setText("Contacto " + jTextFieldNombre.getText() + " borrado correctamente");
             }
@@ -133,7 +132,7 @@ public class GUIAgenda extends javax.swing.JFrame {
     private void buscarContacto() throws Exception { //metodo que recoge el nombre y te devuelve el numero
         validNombre();
 
-        if (agenda.containsKey(jTextFieldNombre.getText())) {
+        if (agenda.containsKey(jTextFieldNombre.getText())) { //si lo encuentra en la agenda que nos devuelva el nombre
             this.jLabelBarraDeEstado.setText("El numero de telefono asociado es: " + String.valueOf(agenda.get(jTextFieldNombre.getText())));
 
         } else {
@@ -142,8 +141,8 @@ public class GUIAgenda extends javax.swing.JFrame {
     }
 
     private void mostrarAgenda() { //metodo que sirve para imprimir la agenda en el jlist limpiando el modelo
-        modelo.clear();
-        for (String nombre : agenda.keySet()) {
+        modelo.clear(); //limpio el modelo para iniciar de 0
+        for (String nombre : agenda.keySet()) { //un bule for each que almacena todos los conactos y los a?ade al modelo 
             Contacto c = new Contacto(nombre, agenda.get(nombre));
             modelo.addElement(c);
         }
@@ -153,8 +152,8 @@ public class GUIAgenda extends javax.swing.JFrame {
     }
 
     private void listar() { //metodo que ordena el mapa convirtiendolo en un tree map que por defecto viene ordenado
-        Map<String, Integer> mapaOrdenado = new TreeMap<>(agenda);
-        agenda = new LinkedHashMap<>(mapaOrdenado);
+        Map<String, Integer> mapaOrdenado = new TreeMap<>(agenda); //creo un tree map debido a que estos se ordenan automaticamente por caracter ascii de la key en este caso el nombre
+        agenda = new LinkedHashMap<>(mapaOrdenado); //sobrescribo el mapa original por el ordenado
         mostrarAgenda();
     }
 
@@ -389,30 +388,27 @@ public class GUIAgenda extends javax.swing.JFrame {
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
 //boton aceptar que segun que este seleccionado ejecuta un metodo u otro
 //en cada uno se devuelve el color original a la barra de estado
-        try {
-            if (aniadir) {
-                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
+        try { //segun que metodo este activado ejecuta una cosa u otra
+             this.jLabelBarraDeEstado.setForeground(Color.BLACK);
+            if (aniadir) {             
                 aniadirContacto();
                 this.jPanelContacto.setVisible(false);
                 mostrarAgenda();
             } else if (borrar) {
-                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 eliminarContacto();
                 this.jPanelContacto.setVisible(false);
                 mostrarAgenda();
             } else if (modificar) {
-                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 modificarContacto();
                 this.jPanelContacto.setVisible(false);
                 mostrarAgenda();
             } else if (buscar) {
-                this.jLabelBarraDeEstado.setForeground(Color.BLACK);
                 buscarContacto();
                 this.jPanelContacto.setVisible(false);
             }
         } catch (Exception ex) {
             this.jLabelBarraDeEstado.setForeground(Color.red); //siempre que pille un error salta y lo pone en rojo
-            this.jLabelBarraDeEstado.setText(ex.getMessage());
+            this.jLabelBarraDeEstado.setText(ex.getMessage()); //recoge la excepcion que haya salido en ese momento y la imprime en color rojo
         }
 
     }//GEN-LAST:event_jButtonAceptarActionPerformed
@@ -447,9 +443,9 @@ public class GUIAgenda extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemBorrarActionPerformed
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
-        desactivarOpciones(); //accede al metodo listar
+        desactivarOpciones();
         this.jPanelContacto.setVisible(false);
-        listar();
+        listar(); //accede al metodo listar
     }//GEN-LAST:event_jMenuItemListarActionPerformed
 
     private void jMenuItemVaciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVaciarActionPerformed

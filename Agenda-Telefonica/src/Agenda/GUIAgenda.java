@@ -88,7 +88,8 @@ public class GUIAgenda extends javax.swing.JFrame {
             if (cont.getNombre().equals(nombreAMod)) {
                 Contacto newContact = new Contacto(jTextFieldNombre.getText(), Integer.parseInt(jTextFieldTelefono.getText()));
                 newContact.setFechaRegistro(cont.getFechaRegistro());
-                agenda.replace(nombreAMod, cont, newContact);
+                agenda.remove(cont.getNombre());
+                agenda.put(newContact.getNombre(), newContact);
             }
         }
         mostrarAgenda();

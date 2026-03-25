@@ -44,13 +44,13 @@ public class GUIAgenda extends javax.swing.JFrame {
     }
 
     private void validNombre() throws Exception { //validacion del nombre
-        if (this.jTextFieldNombre.getText().isBlank() || this.jTextFieldNombre.getText() == null) {
+        if (this.jTextFieldNombre.getText().isBlank() || this.jTextFieldNombre.getText() == null) { //valida que los datos no esten vacios
             throw new Exception("La casilla del nombre esta vacia");
         }
     }
 
     private void validNum() throws Exception { //validacion del numero de telefono
-        if (this.jTextFieldTelefono.getText().isBlank() || this.jTextFieldTelefono.getText() == null) {
+        if (this.jTextFieldTelefono.getText().isBlank() || this.jTextFieldTelefono.getText() == null) { //valida que los datos no esten vacios
             throw new Exception("La casilla del numero esta vacia");
         } else {
             if (!buscar) {
@@ -74,7 +74,7 @@ public class GUIAgenda extends javax.swing.JFrame {
                 throw new Exception("No se modifico ningun contacto");
             }
         } else if (agenda.containsValue(Integer.valueOf(jTextFieldTelefono.getText()))) {
-            for (String nombre : agenda.keySet()) {
+            for (String nombre : agenda.keySet()) { //recorre el mapa buscando la key de ese telefono para devolverla
                 if (agenda.get(nombre).equals(Integer.valueOf(jTextFieldTelefono.getText()))) {
                     if (JOptionPane.showConfirmDialog(this, "Este numero ya esta registrado\n desea modificar los datos?", "Modificar", 0) == 0) {
                         nombreAMod = nombre;
@@ -389,8 +389,8 @@ public class GUIAgenda extends javax.swing.JFrame {
 //boton aceptar que segun que este seleccionado ejecuta un metodo u otro
 //en cada uno se devuelve el color original a la barra de estado
         try { //segun que metodo este activado ejecuta una cosa u otra
-             this.jLabelBarraDeEstado.setForeground(Color.BLACK);
-            if (aniadir) {             
+            this.jLabelBarraDeEstado.setForeground(Color.BLACK);
+            if (aniadir) {
                 aniadirContacto();
                 this.jPanelContacto.setVisible(false);
                 mostrarAgenda();
@@ -466,17 +466,17 @@ public class GUIAgenda extends javax.swing.JFrame {
 
     private void desactivarOpciones() {
         //metodo global el cual deja todas las opciones por defecto para que no haya problemas con los booleans que activan los metodos
-        this.borrar = false;
+        this.borrar = false; //desactivo los cuatro booleanos de los modos
         this.aniadir = false;
         this.modificar = false;
         this.buscar = false;
-        this.jTextFieldNombre.setText("");
+        this.jTextFieldNombre.setText(""); //limpio los text fielda
         this.jTextFieldTelefono.setText("");
-        this.jLabelTelefono.setVisible(true);
+        this.jLabelTelefono.setVisible(true); //reactivo las dos de telefono por que ambas se ocultan en ciertos metodos
         this.jTextFieldTelefono.setVisible(true);
-        this.nombreAMod = null;
-        this.jPanelContacto.setVisible(true);
-        this.jLabelBarraDeEstado.setText("");
+        this.nombreAMod = null; //borro la variable nombre a mod para que no interfiera en metodos como modificar o aniadir
+        this.jPanelContacto.setVisible(true); //vuelvo visible conctacto para que funcione en los metodos
+        this.jLabelBarraDeEstado.setText(""); //limpio la barra de estado
     }
     /**
      * @param args the command line arguments

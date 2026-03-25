@@ -53,7 +53,7 @@ public class Contacto {
     //metodo toString
     @Override
     public String toString() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT, FormatStyle.MEDIUM);
+       
         return nombre + " " + telefono ;
     }
 
